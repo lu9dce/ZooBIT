@@ -32,7 +32,6 @@ $vvd = 1; // Valor inicial de pérdida de vida por movimiento
  * Función para mover el punto blanco en el espacio de juego.
  * Calcula la dirección hacia el punto más cercano y realiza movimientos aleatorios.
  */
-
 function moverPuntoBlanco()
 {
     global $puntoBlancoX, $puntoBlancoY, $movimientos, $puntosRojos, $puntosVerdes, $puntosAzules, $vida, $contador, $colorComida, $comio, $radioX, $radioY, $ancho, $alto, $vvd;
