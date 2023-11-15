@@ -1,8 +1,10 @@
 
 ## Hecho con PHP en Slackware
 
-
 # Zoobit: Simulación de una Neurona
+
+<img src="https://raw.githubusercontent.com/lu9dce/lu9dce.github.io/main/img/zoobit.png" width="300" height="300">
+<hr>
 
 Este programa en PHP, llamado Zoobit, es una simulación de una inteligencia basada en una neurona. En esta simulación, un punto blanco se mueve en un espacio bidimensional, interactuando con puntos de diferentes colores para acumular puntos de vida o perder vida según el color. El objetivo es sobrevivir en el entorno, moviéndose estratégicamente y consumiendo puntos de comida.
 
