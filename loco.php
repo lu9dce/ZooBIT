@@ -72,7 +72,7 @@ function moverPuntoBlanco()
             if ($puntoBlancoX - $radioX / 2 <= $punto[0] && $punto[0] <= $puntoBlancoX + $radioX / 2
                 && $puntoBlancoY - $radioY / 2 <= $punto[1] && $punto[1] <= $puntoBlancoY + $radioY / 2) {
                 $vida += obtenerValorVida($color);
-                $comio++;
+                //$comio++;
             } else {
                 $puntosComidos[] = $punto;
             }
@@ -124,16 +124,21 @@ function obtenerValorVida($color)
  */
 function encontrarPuntoCercano()
 {
-    global $puntoBlancoX, $puntoBlancoY, $puntosRojos, $puntosVerdes, $puntosAzules;
+    global $puntoBlancoX, $puntoBlancoY, $puntosRojos, $puntosVerdes, $puntosAzules, $colorComida;
 
     // Filtrar solo los puntos verdes
     $puntosVerdesFiltrados = array_filter($puntosVerdes, function ($punto) {
-        global $puntoBlancoX, $puntoBlancoY, $puntosRojos;
+        global $puntoBlancoX, $puntoBlancoY, $puntosRojos, $colorComida;
 
         // Calcular la distancia a los puntos verdes que no están demasiado cerca de puntos rojos
         $distanciaMinima = min(array_map(function ($puntoRojo) use ($punto) {
             return calcularDistancia($punto[0], $punto[1], $puntoRojo[0], $puntoRojo[1]);
         }, $puntosRojos));
+
+        // Actualizar el color de la comida si no hay puntos rojos cercanos
+        if ($distanciaMinima > 10) {
+            $colorComida = 'Verde';
+        }
 
         return $distanciaMinima > 10; // Ajusta este valor según sea necesario
     });
@@ -150,6 +155,9 @@ function encontrarPuntoCercano()
         if ($distancia < $distanciaMinima) {
             $distanciaMinima = $distancia;
             $puntoCercano = $punto;
+
+            // Actualizar el color de la comida según el tipo de punto encontrado
+            $colorComida = (in_array($punto, $puntosRojos)) ? 'Rojo' : ((in_array($punto, $puntosVerdes)) ? 'Verde' : 'Azul');
         }
     }
 
@@ -306,7 +314,7 @@ while ($vida > 0) {
         }
 
         // Ajustar variables relacionadas con la regeneración
-        $fcomi = $fcomi - 10;
+        $fcomi = $fcomi - 20;
         $vvd++;
 
         // Actualizar el tiempo de la última regeneración
@@ -319,13 +327,18 @@ while ($vida > 0) {
     // Calcular el tiempo transcurrido desde el inicio de la simulación
     $tiempoZ = time() - $tiempoI;
 
-    // Construir el texto para guardar en datos.txt
+    $puntoCercano = encontrarPuntoCercano();
+
+// Construir el texto para guardar en datos.txt
     $texto = "
-    Vida      = $vida
-    Comio     = $comio
-    Tiempo    = $tiempoZ
-    CosteM    = $vvd
-    ";
+     Total vida = $vida
+Comida generada = " . $fcomi * 3 . "
+          Comio = $comio
+         Tiempo = $tiempoZ
+  Ciclo de vida = $vvd
+     Zoobit GPS = [" . (int) $puntoBlancoX . ", " . (int) $puntoBlancoY . "]
+  Punto cercano = $colorComida " . ($puntoCercano ? "[" . (int) $puntoCercano[0] . ", " . (int) $puntoCercano[1] . "]" : "Ninguno") . "
+";
 
     // Guardar la información en datos.txt
     file_put_contents('datos.txt', $texto);
