@@ -28,10 +28,6 @@ Para poder visualizar los datos generados tiene un index.php puedes crear un ser
 
 y en el navegador usa **https://127.0.0.1:2000**
 
-ejecuta en otra terminal
-
-```php loco.php```
-
 * Recuenda ajustar tu php.ini para que incluyan los modulos necesarios
 
 ## Archivos Generados
